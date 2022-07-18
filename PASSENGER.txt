@@ -1,0 +1,5 @@
+1	11	102	Brest	350
+2	22	101	Vitebsk	300
+3	33	102	Gomel	370
+4	11	102	Brest	350
+5	22	101	Vitebsk	300
