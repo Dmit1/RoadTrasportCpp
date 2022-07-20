@@ -8,7 +8,7 @@
 
 using namespace std;
 
-struct COSTOMERS {           // Cтруктура заказчика 
+class COSTOMERS {           // Cтруктура заказчика 
 public:
 	int  id_Costomers;       // id клиента
 	char Full_name[30];      // ФИО заказчика 
@@ -17,7 +17,7 @@ public:
 	int  mobile;             // номер телефона
 	char e_mail[30];             // Адресс электронной почты
 };
-struct CARGO {               // Массив структуры информации грузоперевозок
+class CARGO {               // Массив структуры информации грузоперевозок
 public:
 	int id_Order;            // id заказа груза
 	int id_Costomers;        // id клиента 
@@ -30,7 +30,7 @@ public:
 	double weight;           // Вес груза
 	double V;                // Объем авто
 };
-struct PASSENGER {           // Массив структуры информации пассажироперевозок
+class PASSENGER {           // Массив структуры информации пассажироперевозок
 public:
 	int  id_Order;           // id_пасажироперевозки
 	int id_Costomers;        // id-клиента 
@@ -38,12 +38,13 @@ public:
 	char name_City[30];      // Населенный пункт
 	int  Distance;           // Расстояние до населенного пункта
 };
-struct CARS {
+class CARS {
+public:
 	int id_Cars;
 	char mod_Cars[30];
 	double cost_Cars;
 	double cost_TO;
-	double fuel_Pasxod;
+	double fuel_Pasxod; 
 };
 void read_row(char* name, int* row);
 void read_arrays1(char* name, COSTOMERS* costomers, int* p_row);     // Загрузка данных массива структур COSTOMERS
@@ -55,7 +56,6 @@ void print_arrays2(CARGO* cargo, int row);               // ...
 void print_arrays3(PASSENGER* passenger, int row);       // ...
 void print_arrays4(CARS* cars, int row);                 // ...
 int menu_info(int);                                      // Меню выбора информации
-int menu_load(int);                                      // Меню выбора загрузки и вывода информации
 void count_poezdok(COSTOMERS* costomers, PASSENGER* passenger, int* row_costomers, int* row_passenger);  // Подсчет поездок
 void count_reisov(COSTOMERS* costomers, CARGO* cargo, int* row_costomers, int* row_cargo);  // Подсчет рейсов
 void info_joint(COSTOMERS* costomers, PASSENGER* passenger, CARGO* cargo, CARS* cars,       // Общая информация включает
@@ -95,8 +95,13 @@ int main() {
 	double* cost_r = new double[*row_cars];       // Себестоимость аренды в день
 	double* cost_rent = new double[*row_cars];    // Стоимость аренды в день
 	double* procent_rent = new double[*row_cars]; // Процент прибыли
-	int item{}, item1{};
+	int item{};
 	char otvet;
+	// Чтение данных 
+	read_arrays1(name_file[0], costomers, row_costomers);             // Загрузка данных массива структур PASSENGER   
+	read_arrays2(name_file[1], cargo, row_cargo);
+	read_arrays3(name_file[2], passenger, row_passenger);
+	read_arrays4(name_file[3], cars, row_cars);
 	//Меню(Исходные данные)
 	do {
 		system("cls");
@@ -106,82 +111,28 @@ int main() {
 				system("cls");
 			}
 		} while (item > 12 || item <= 0);
-		if (item > 0 && item < 6) {
-			do {
-				item1 = menu_load(item1);                           // возврат item из функции menu_load
-				if (item1 >= 3 || item1 <= 0) {
-					system("cls");
-				}
-			} while (item1 > 3 || item1 <= 0);
-		}
 		switch (item) {
 		case 1:
-			if (item1 == 1) {
-				read_arrays1(name_file[0], costomers, row_costomers);                // Загрузка данных массива структур COSTOMERS                          
-				cout << endl;
-			}
-			if (item1 == 2) {
-				read_arrays1(name_file[0], costomers, row_costomers);                // Загрузка и вывод данных массива структур COSTOMERS                          
-				cout << endl;
 				print_arrays1(costomers, *row_costomers);
-			}
 			break;
 		case 2:
-			if (item1 == 1) {
-				read_arrays2(name_file[1], cargo, row_cargo);                  // Загрузка данных массива структур CARGO   
-				cout << endl;
-			}
-			if (item1 == 2) {
-				read_arrays2(name_file[1], cargo, row_cargo);                  // Загрузка и вывод данных массива структур CARGO   
-				cout << endl;
 				print_arrays2(cargo, *row_cargo);
-				cout << endl;
-			}
+			cout << endl;
 			break;
 		case 3:
-			if (item1 == 1) {
-				read_arrays3(name_file[2], passenger, row_passenger);             // Загрузка данных массива структур PASSENGER   
-				cout << endl;
-			}
-			if (item1 == 2) {
-				read_arrays3(name_file[2], passenger, row_passenger);             // Загрузка и вывод данных массива структур PASSENGER   
-				cout << endl;
 				print_arrays3(passenger, *row_passenger);
 				cout << endl;
-			}
 			break;
 		case 4:
-			if (item1 == 1) {
-				read_arrays4(name_file[3], cars, row_cars);             // Загрузка данных массива структур PASSENGER   
-				cout << endl;
-			}
-			if (item1 == 2) {
-				read_arrays4(name_file[3], cars, row_cars);             // Загрузка и вывод данных массива структур PASSENGER   
-				cout << endl;
 				print_arrays4(cars, *row_cars);
 				cout << endl;
-			}
 			break;
 		case 5:
-			if (item1 == 1) {
-				read_arrays1(name_file[0], costomers, row_costomers);             // Загрузка данных массива структур PASSENGER   
-				read_arrays2(name_file[1], cargo, row_cargo);
-				read_arrays3(name_file[2], passenger, row_passenger);
-				read_arrays4(name_file[3], cars, row_cars);
-				cout << endl;
-			}
-			if (item1 == 2) {
-				read_arrays1(name_file[0], costomers, row_costomers);             // Загрузка данных массива структур PASSENGER   
-				read_arrays2(name_file[1], cargo, row_cargo);
-				read_arrays3(name_file[2], passenger, row_passenger);
-				read_arrays4(name_file[3], cars, row_cars);
-				cout << endl;
 				print_arrays1(costomers, *row_costomers);
 				print_arrays2(cargo, *row_cargo);
 				print_arrays3(passenger, *row_passenger);
 				print_arrays4(cars, *row_cars);
 				cout << endl;
-			}
 			break;
 		case 6: cout << "id_клиента,ФИО,поездки(пасс)" << endl;
 			cout << endl;
@@ -418,14 +369,6 @@ int menu_info(int item) {
 	cout << "10-id_заказа,ФИО,Tel.,e_mail(груз)" << endl;
 	cout << "11-Авто, Себестоимость километра" << endl;
 	cout << "12-Авто, Себестоимость аренды, Стоимоимость аренды, Прибыль" << endl;
-	cout << "Ваш выбор: ";
-	cin >> item;
-	return item;
-}
-int menu_load(int item) {
-	cout << " Меню-1 " << endl;
-	cout << "1-Загрузить" << endl;
-	cout << "2-Загрузить и вывести на экран" << endl;
 	cout << "Ваш выбор: ";
 	cin >> item;
 	return item;
